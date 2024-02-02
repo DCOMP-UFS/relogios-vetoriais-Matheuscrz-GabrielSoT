@@ -24,13 +24,23 @@ void Event(int pid, Clock *clock){
 }
 
 
-void Send(int pid, Clock *clock){
-   // TO DO
+void Send(int pid, Clock *clock, int dest){
+   Event(pid,clock);
+   MPI_SEND(clock, sizeof(Clock), MPI_BYTE, dest, 0, MPI_COMM_WORLD);
+   printf("Processo %d enviou para o processo %d: Clock(%d, %d, %d)\n",pid, dest, clock->p[0], clock->p[1], clock->p[2]);
 }
 
-void Receive(int pid, Clock *clock){
-   // TO DO
+void Receive(int pid, Clock *clock, int source){
+   Clock received;
+   MPI_Recv(&received, sizeof(Clock), MPI_BYTE, source, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
+   for(int i = 0; i < 3; i++){
+      if(received.p[i] > clock->p[i]){
+         clock->p[i]= received.p[i];
+      }
+   }
+
+   printf("Processo %d recebeu do processo %d: Clock(%d, %d, %d)\n", pid, source, clock->p[0], clock->p[1], clock->p[2]))
 }
 
 // Representa o processo de rank 0
@@ -39,8 +49,12 @@ void process0(){
    Event(0, &clock);
    printf("Process: %d, Clock: (%d, %d, %d)\n", 0, clock.p[0], clock.p[1], clock.p[2]);
 
-   // TO DO
+   Send(0, &clock, 1); //Exemplo de uso da função Send
 
+   Receive(0, &clock, 1); //Exemplo de uso da função Receive
+
+   printf("Processo %d, Clock após troca com o processo 1: (%d, %d, %d)\n", 0, clock.p[0], clock.p[1], clock.p[2]);
+   // TODO: Executar todo procedimento do processo 0 seguindo a imagem
 }
 
 // Representa o processo de rank 1
@@ -48,15 +62,20 @@ void process1(){
    Clock clock = {{0,0,0}};
    printf("Process: %d, Clock: (%d, %d, %d)\n", 1, clock.p[0], clock.p[1], clock.p[2]);
 
-   // TO DO
+   Receive(1, &clock, 0);
+
+   Send(1, %clock, 0);
+
+   printf("Processo %d, Clock após troca com Processo 0: (%d, %d, %d)\n", 1, clock.p[0], clock.p[1], clock.p[2]);
+   // TODO: Executar todo procedimento do processo 1 seguindo a imagem
 }
 
 // Representa o processo de rank 2
 void process2(){
    Clock clock = {{0,0,0}};
-   printf("Process: %d, Clock: (%d, %d, %d)\n", 2, clock.p[0], clock.p[1], clock.p[2]);
+   // printf("Process: %d, Clock: (%d, %d, %d)\n", 2, clock.p[0], clock.p[1], clock.p[2]);
    
-   // TO DO
+   // TODO: Executar todo procedimento do processo 2 seguindo a imagem
 }
 
 int main(void) {
