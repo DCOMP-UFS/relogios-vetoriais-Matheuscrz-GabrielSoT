@@ -38,7 +38,6 @@ void Receive(int pid, Clock *clock, int source){
     printf("Processo %d recebeu do processo %d: Clock(%d, %d, %d)\n", pid, source, clock->p[0], clock->p[1], clock->p[2]);
 }
 
-// Representa o processo de rank 0
 void process0(){
     Clock clock = {{0,0,0}};
     Event(0, &clock);
@@ -55,7 +54,6 @@ void process0(){
     Event(0, &clock);
 
     printf("Processo %d, Clock troca com o processo 1: (%d, %d, %d)\n", 0, clock.p[0], clock.p[1], clock.p[2]);
-    // TODO: Executar todo procedimento do processo 0 seguindo a imagem
 }
 
 // Representa o processo de rank 1
@@ -66,7 +64,6 @@ void process1(){
     Receive(1, &clock, 0);
 
     Receive(1, &clock, 0);
-    // TODO: Executar todo procedimento do processo 1 seguindo a imagem
 }
 
 // Representa o processo de rank 2
@@ -76,8 +73,6 @@ void process2(){
     printf("Processo: %d, Clock: (%d, %d, %d)\n", 2, clock.p[0], clock.p[1], clock.p[2]);
     Send(2, &clock, 0);
     Receive(2, &clock, 0);
-
-    // TODO: Executar todo procedimento do processo 2 seguindo a imagem
 }
 
 int main(void) {
