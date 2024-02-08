@@ -46,36 +46,39 @@ void Receive(int pid, Clock *clock, int source){
 // Representa o processo de rank 0
 void process0(){
    Clock clock = {{0,0,0}};
-   Event(0, &clock);
-   printf("Process: %d, Clock: (%d, %d, %d)\n", 0, clock.p[0], clock.p[1], clock.p[2]);
+    Event(0, &clock);
+    printf("Processo: %d, Clock: (%d, %d, %d)\n", 0, clock.p[0], clock.p[1], clock.p[2]);
 
-   Send(0, &clock, 1); //Exemplo de uso da função Send
+    Send(0, &clock, 1);
+    Receive(0, &clock, 1);
 
-   Receive(0, &clock, 1); //Exemplo de uso da função Receive
+    Send(0, &clock, 2);
+    Receive(0, &clock, 2);
 
-   printf("Processo %d, Clock após troca com o processo 1: (%d, %d, %d)\n", 0, clock.p[0], clock.p[1], clock.p[2]);
-   // TODO: Executar todo procedimento do processo 0 seguindo a imagem
+    Send(0, &clock, 1);
+
+    Event(0, &clock);
+
+    printf("Processo %d, Clock troca com o processo 1: (%d, %d, %d)\n", 0, clock.p[0], clock.p[1], clock.p[2]);
 }
 
 // Representa o processo de rank 1
 void process1(){
-   Clock clock = {{0,0,0}};
-   printf("Process: %d, Clock: (%d, %d, %d)\n", 1, clock.p[0], clock.p[1], clock.p[2]);
+    Clock clock = {{0,0,0}};
+    printf("Processo: %d, Clock: (%d, %d, %d)\n", 1, clock.p[0], clock.p[1], clock.p[2]);
+    Send(1, &clock, 0);
+    Receive(1, &clock, 0);
 
-   Receive(1, &clock, 0);
-
-   Send(1, %clock, 0);
-
-   printf("Processo %d, Clock após troca com Processo 0: (%d, %d, %d)\n", 1, clock.p[0], clock.p[1], clock.p[2]);
-   // TODO: Executar todo procedimento do processo 1 seguindo a imagem
+    Receive(1, &clock, 0);
 }
 
 // Representa o processo de rank 2
 void process2(){
-   Clock clock = {{0,0,0}};
-   // printf("Process: %d, Clock: (%d, %d, %d)\n", 2, clock.p[0], clock.p[1], clock.p[2]);
-   
-   // TODO: Executar todo procedimento do processo 2 seguindo a imagem
+    Clock clock = {{0,0,0}};
+    Event(2, &clock);
+    printf("Processo: %d, Clock: (%d, %d, %d)\n", 2, clock.p[0], clock.p[1], clock.p[2]);
+    Send(2, &clock, 0);
+    Receive(2, &clock, 0);
 }
 
 int main(void) {
