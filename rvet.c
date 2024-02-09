@@ -26,7 +26,7 @@ void Event(int pid, Clock *clock){
 }
 
 void Send(int pid, Clock *clock, int dest){
-    Event(pid, clock);
+    clock->p[pid]++;
 
     MPI_Send(clock, sizeof(Clock), MPI_BYTE, dest, 0, MPI_COMM_WORLD);
     printf("Processo %d enviou para o processo %d: Clock(%d, %d, %d)\n", pid, dest, clock->p[0], clock->p[1], clock->p[2]);
@@ -43,7 +43,7 @@ void Receive(int pid, Clock *clock, int source){
         }
     }
 
-    Event(pid, clock);
+    clock->p[pid]++;
 
     printf("Processo %d recebeu do processo %d: Clock(%d, %d, %d)\n", pid, source, clock->p[0], clock->p[1], clock->p[2]);
 }
